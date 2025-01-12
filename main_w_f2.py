@@ -610,60 +610,60 @@ with open(output_files_path + "/output.txt", 'w') as output_file:
                 if ovmax > 0:
                     status = "INSUFFICIENT OVERLAP"
 
-            """
-             Draw image to show animation
-            """
-            if show_animation:
-                height, widht = img.shape[:2]
-                # colors (OpenCV works with BGR)
-                white = (255,255,255)
-                light_blue = (255,200,100)
-                green = (0,255,0)
-                light_red = (30,30,255)
-                # 1st line
-                margin = 10
-                v_pos = int(height - margin - (bottom_border / 2.0))
-                text = "Image: " + ground_truth_img[0] + " "
-                img, line_width = draw_text_in_image(img, text, (margin, v_pos), white, 0)
-                text = "Class [" + str(class_index) + "/" + str(n_classes) + "]: " + class_name + " "
-                img, line_width = draw_text_in_image(img, text, (margin + line_width, v_pos), light_blue, line_width)
-                if ovmax != -1:
-                    color = light_red
-                    if status == "INSUFFICIENT OVERLAP":
-                        text = "IoU: {0:.2f}% ".format(ovmax*100) + "< {0:.2f}% ".format(min_overlap*100)
-                    else:
-                        text = "IoU: {0:.2f}% ".format(ovmax*100) + ">= {0:.2f}% ".format(min_overlap*100)
-                        color = green
-                    img, _ = draw_text_in_image(img, text, (margin + line_width, v_pos), color, line_width)
-                # 2nd line
-                v_pos += int(bottom_border / 2.0)
-                rank_pos = str(idx+1) # rank position (idx starts at 0)
-                text = "Detection #rank: " + rank_pos + " confidence: {0:.2f}% ".format(float(detection["confidence"])*100)
-                img, line_width = draw_text_in_image(img, text, (margin, v_pos), white, 0)
-                color = light_red
-                if status == "MATCH!":
-                    color = green
-                text = "Result: " + status + " "
-                img, line_width = draw_text_in_image(img, text, (margin + line_width, v_pos), color, line_width)
+            # """
+            #  Draw image to show animation
+            # """
+            # if show_animation:
+            #     height, widht = img.shape[:2]
+            #     # colors (OpenCV works with BGR)
+            #     white = (255,255,255)
+            #     light_blue = (255,200,100)
+            #     green = (0,255,0)
+            #     light_red = (30,30,255)
+            #     # 1st line
+            #     margin = 10
+            #     v_pos = int(height - margin - (bottom_border / 2.0))
+            #     text = "Image: " + ground_truth_img[0] + " "
+            #     img, line_width = draw_text_in_image(img, text, (margin, v_pos), white, 0)
+            #     text = "Class [" + str(class_index) + "/" + str(n_classes) + "]: " + class_name + " "
+            #     img, line_width = draw_text_in_image(img, text, (margin + line_width, v_pos), light_blue, line_width)
+            #     if ovmax != -1:
+            #         color = light_red
+            #         if status == "INSUFFICIENT OVERLAP":
+            #             text = "IoU: {0:.2f}% ".format(ovmax*100) + "< {0:.2f}% ".format(min_overlap*100)
+            #         else:
+            #             text = "IoU: {0:.2f}% ".format(ovmax*100) + ">= {0:.2f}% ".format(min_overlap*100)
+            #             color = green
+            #         img, _ = draw_text_in_image(img, text, (margin + line_width, v_pos), color, line_width)
+            #     # 2nd line
+            #     v_pos += int(bottom_border / 2.0)
+            #     rank_pos = str(idx+1) # rank position (idx starts at 0)
+            #     text = "Detection #rank: " + rank_pos + " confidence: {0:.2f}% ".format(float(detection["confidence"])*100)
+            #     img, line_width = draw_text_in_image(img, text, (margin, v_pos), white, 0)
+            #     color = light_red
+            #     if status == "MATCH!":
+            #         color = green
+            #     text = "Result: " + status + " "
+            #     img, line_width = draw_text_in_image(img, text, (margin + line_width, v_pos), color, line_width)
 
-                font = cv2.FONT_HERSHEY_SIMPLEX
-                if ovmax > 0: # if there is intersections between the bounding-boxes
-                    bbgt = [ int(round(float(x))) for x in gt_match["bbox"].split() ]
-                    cv2.rectangle(img,(bbgt[0],bbgt[1]),(bbgt[2],bbgt[3]),light_blue,2)
-                    cv2.rectangle(img_cumulative,(bbgt[0],bbgt[1]),(bbgt[2],bbgt[3]),light_blue,2)
-                    cv2.putText(img_cumulative, class_name, (bbgt[0],bbgt[1] - 5), font, 0.6, light_blue, 1, cv2.LINE_AA)
-                bb = [int(i) for i in bb]
-                cv2.rectangle(img,(bb[0],bb[1]),(bb[2],bb[3]),color,2)
-                cv2.rectangle(img_cumulative,(bb[0],bb[1]),(bb[2],bb[3]),color,2)
-                cv2.putText(img_cumulative, class_name, (bb[0],bb[1] - 5), font, 0.6, color, 1, cv2.LINE_AA)
-                # show image
-                cv2.imshow("Animation", img)
-                cv2.waitKey(20) # show for 20 ms
-                # save image to output
-                output_img_path = output_files_path + "/images/detections_one_by_one/" + class_name + "_detection" + str(idx) + ".jpg"
-                cv2.imwrite(output_img_path, img)
-                # save the image with all the objects drawn to it
-                cv2.imwrite(img_cumulative_path, img_cumulative)
+            #     font = cv2.FONT_HERSHEY_SIMPLEX
+            #     if ovmax > 0: # if there is intersections between the bounding-boxes
+            #         bbgt = [ int(round(float(x))) for x in gt_match["bbox"].split() ]
+            #         cv2.rectangle(img,(bbgt[0],bbgt[1]),(bbgt[2],bbgt[3]),light_blue,2)
+            #         cv2.rectangle(img_cumulative,(bbgt[0],bbgt[1]),(bbgt[2],bbgt[3]),light_blue,2)
+            #         cv2.putText(img_cumulative, class_name, (bbgt[0],bbgt[1] - 5), font, 0.6, light_blue, 1, cv2.LINE_AA)
+            #     bb = [int(i) for i in bb]
+            #     cv2.rectangle(img,(bb[0],bb[1]),(bb[2],bb[3]),color,2)
+            #     cv2.rectangle(img_cumulative,(bb[0],bb[1]),(bb[2],bb[3]),color,2)
+            #     cv2.putText(img_cumulative, class_name, (bb[0],bb[1] - 5), font, 0.6, color, 1, cv2.LINE_AA)
+            #     # show image
+            #     cv2.imshow("Animation", img)
+            #     cv2.waitKey(20) # show for 20 ms
+            #     # save image to output
+            #     output_img_path = output_files_path + "/images/detections_one_by_one/" + class_name + "_detection" + str(idx) + ".jpg"
+            #     cv2.imwrite(output_img_path, img)
+            #     # save the image with all the objects drawn to it
+            #     cv2.imwrite(img_cumulative_path, img_cumulative)
 
 
         ## Compute F2
@@ -718,39 +718,39 @@ with open(output_files_path + "/output.txt", 'w') as output_file:
         lamr, mr, fppi = log_average_miss_rate(np.array(prec), np.array(rec), n_images)
         lamr_dictionary[class_name] = lamr
 
-        """
-         Draw plot
-        """
-        if draw_plot:
-            plt.plot(rec, prec, '-o')
-            # add a new penultimate point to the list (mrec[-2], 0.0)
-            # since the last line segment (and respective area) do not affect the AP value
-            area_under_curve_x = mrec[:-1] + [mrec[-2]] + [mrec[-1]]
-            area_under_curve_y = mprec[:-1] + [0.0] + [mprec[-1]]
-            plt.fill_between(area_under_curve_x, 0, area_under_curve_y, alpha=0.2, edgecolor='r')
-            # set window title
-            fig = plt.gcf() # gcf - get current figure
-            fig.canvas.set_window_title('AP ' + class_name)
-            # set plot title
-            plt.title('class: ' + text)
-            #plt.suptitle('This is a somewhat long figure title', fontsize=16)
-            # set axis titles
-            plt.xlabel('Recall')
-            plt.ylabel('Precision')
-            # optional - set axes
-            axes = plt.gca() # gca - get current axes
-            axes.set_xlim([0.0,1.0])
-            axes.set_ylim([0.0,1.05]) # .05 to give some extra space
-            # Alternative option -> wait for button to be pressed
-            #while not plt.waitforbuttonpress(): pass # wait for key display
-            # Alternative option -> normal display
-            #plt.show()
-            # save the plot
-            fig.savefig(output_files_path + "/classes/" + class_name + ".png")
-            plt.cla() # clear axes for next plot
+    #     """
+    #      Draw plot
+    #     """
+    #     if draw_plot:
+    #         plt.plot(rec, prec, '-o')
+    #         # add a new penultimate point to the list (mrec[-2], 0.0)
+    #         # since the last line segment (and respective area) do not affect the AP value
+    #         area_under_curve_x = mrec[:-1] + [mrec[-2]] + [mrec[-1]]
+    #         area_under_curve_y = mprec[:-1] + [0.0] + [mprec[-1]]
+    #         plt.fill_between(area_under_curve_x, 0, area_under_curve_y, alpha=0.2, edgecolor='r')
+    #         # set window title
+    #         fig = plt.gcf() # gcf - get current figure
+    #         fig.canvas.set_window_title('AP ' + class_name)
+    #         # set plot title
+    #         plt.title('class: ' + text)
+    #         #plt.suptitle('This is a somewhat long figure title', fontsize=16)
+    #         # set axis titles
+    #         plt.xlabel('Recall')
+    #         plt.ylabel('Precision')
+    #         # optional - set axes
+    #         axes = plt.gca() # gca - get current axes
+    #         axes.set_xlim([0.0,1.0])
+    #         axes.set_ylim([0.0,1.05]) # .05 to give some extra space
+    #         # Alternative option -> wait for button to be pressed
+    #         #while not plt.waitforbuttonpress(): pass # wait for key display
+    #         # Alternative option -> normal display
+    #         #plt.show()
+    #         # save the plot
+    #         fig.savefig(output_files_path + "/classes/" + class_name + ".png")
+    #         plt.cla() # clear axes for next plot
 
-    if show_animation:
-        cv2.destroyAllWindows()
+    # if show_animation:
+    #     cv2.destroyAllWindows()
 
     output_file.write("\n# mAP of all classes\n")
     mAP = sum_AP / n_classes
@@ -758,28 +758,28 @@ with open(output_files_path + "/output.txt", 'w') as output_file:
     output_file.write(text + "\n")
     print(text)
 
-"""
- Draw false negatives
-"""
-if show_animation:
-    pink = (203,192,255)
-    for tmp_file in gt_files:
-        ground_truth_data = json.load(open(tmp_file))
-        #print(ground_truth_data)
-        # get name of corresponding image
-        start = TEMP_FILES_PATH + '/'
-        img_id = tmp_file[tmp_file.find(start)+len(start):tmp_file.rfind('_ground_truth.json')]
-        img_cumulative_path = output_files_path + "/images/" + img_id + ".jpg"
-        img = cv2.imread(img_cumulative_path)
-        if img is None:
-            img_path = IMG_PATH + '/' + img_id + ".jpg"
-            img = cv2.imread(img_path)
-        # draw false negatives
-        for obj in ground_truth_data:
-            if not obj['used']:
-                bbgt = [ int(round(float(x))) for x in obj["bbox"].split() ]
-                cv2.rectangle(img,(bbgt[0],bbgt[1]),(bbgt[2],bbgt[3]),pink,2)
-        cv2.imwrite(img_cumulative_path, img)
+# """
+#  Draw false negatives
+# """
+# if show_animation:
+#     pink = (203,192,255)
+#     for tmp_file in gt_files:
+#         ground_truth_data = json.load(open(tmp_file))
+#         #print(ground_truth_data)
+#         # get name of corresponding image
+#         start = TEMP_FILES_PATH + '/'
+#         img_id = tmp_file[tmp_file.find(start)+len(start):tmp_file.rfind('_ground_truth.json')]
+#         img_cumulative_path = output_files_path + "/images/" + img_id + ".jpg"
+#         img = cv2.imread(img_cumulative_path)
+#         if img is None:
+#             img_path = IMG_PATH + '/' + img_id + ".jpg"
+#             img = cv2.imread(img_path)
+#         # draw false negatives
+#         for obj in ground_truth_data:
+#             if not obj['used']:
+#                 bbgt = [ int(round(float(x))) for x in obj["bbox"].split() ]
+#                 cv2.rectangle(img,(bbgt[0],bbgt[1]),(bbgt[2],bbgt[3]),pink,2)
+#         cv2.imwrite(img_cumulative_path, img)
 
 # remove the temp_files directory
 shutil.rmtree(TEMP_FILES_PATH)
@@ -807,28 +807,28 @@ for txt_file in dr_files_list:
 dr_classes = list(det_counter_per_class.keys())
 
 
-"""
- Plot the total number of occurences of each class in the ground-truth
-"""
-if draw_plot:
-    window_title = "ground-truth-info"
-    plot_title = "ground-truth\n"
-    plot_title += "(" + str(len(ground_truth_files_list)) + " files and " + str(n_classes) + " classes)"
-    x_label = "Number of objects per class"
-    output_path = output_files_path + "/ground-truth-info.png"
-    to_show = False
-    plot_color = 'forestgreen'
-    draw_plot_func(
-        gt_counter_per_class,
-        n_classes,
-        window_title,
-        plot_title,
-        x_label,
-        output_path,
-        to_show,
-        plot_color,
-        '',
-        )
+# """
+#  Plot the total number of occurences of each class in the ground-truth
+# """
+# if draw_plot:
+#     window_title = "ground-truth-info"
+#     plot_title = "ground-truth\n"
+#     plot_title += "(" + str(len(ground_truth_files_list)) + " files and " + str(n_classes) + " classes)"
+#     x_label = "Number of objects per class"
+#     output_path = output_files_path + "/ground-truth-info.png"
+#     to_show = False
+#     plot_color = 'forestgreen'
+#     draw_plot_func(
+#         gt_counter_per_class,
+#         n_classes,
+#         window_title,
+#         plot_title,
+#         x_label,
+#         output_path,
+#         to_show,
+#         plot_color,
+#         '',
+#         )
 
 """
  Write number of ground-truth objects per class to results.txt

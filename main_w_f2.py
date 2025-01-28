@@ -679,7 +679,7 @@ with open(output_files_path + "/output.txt", 'w') as output_file:
         exact_rec = (total_tp)/(n_gt)
 
         f2 = F_beta(exact_rec, exact_prec, 2 )
-        print('F2:', f2)
+        print('F2 =', f2)
 
         #print(tp)
         # compute precision/recall
@@ -710,8 +710,8 @@ with open(output_files_path + "/output.txt", 'w') as output_file:
         rounded_prec = [ '%.2f' % elem for elem in prec ]
         rounded_rec = [ '%.2f' % elem for elem in rec ]
         output_file.write(text + "\n Precision: " + str(rounded_prec) + "\n Recall :" + str(rounded_rec) + "\n\n")
-        if not args.quiet:
-            print(text)
+        # if not args.quiet:
+        #     print(text)
         ap_dictionary[class_name] = ap
 
         n_images = counter_images_per_class[class_name]
@@ -754,7 +754,7 @@ with open(output_files_path + "/output.txt", 'w') as output_file:
 
     output_file.write("\n# mAP of all classes\n")
     mAP = sum_AP / n_classes
-    text = "mAP = {0:.2f}%".format(mAP*100)
+    text = "mAP = {0:.2f}"#.format(mAP*100)
     output_file.write(text + "\n")
     print(text)
 

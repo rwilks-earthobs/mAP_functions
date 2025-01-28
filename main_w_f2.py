@@ -754,7 +754,7 @@ with open(output_files_path + "/output.txt", 'w') as output_file:
 
     output_file.write("\n# mAP of all classes\n")
     mAP = sum_AP / n_classes
-    text = "mAP = {0:.2f}"#.format(mAP*100)
+    text = "mAP = {0:.2f}".format(mAP)
     output_file.write(text + "\n")
     print(text)
 

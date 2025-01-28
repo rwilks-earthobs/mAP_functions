@@ -528,7 +528,7 @@ with open(output_files_path + "/output.txt", 'w') as output_file:
         tp = [0] * nd # creates an array of zeros of size nd
         fp = [0] * nd
 
-        n_gt = len(dr_data) # number of ground truth points
+        n_gt = gt_counter_per_class[class_name] # placeholder to count number of ground truth points
 
         for idx, detection in enumerate(dr_data):
             file_id = detection["file_id"]

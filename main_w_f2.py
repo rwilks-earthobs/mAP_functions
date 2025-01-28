@@ -200,6 +200,10 @@ def voc_ap(rec, prec):
         matlab: ap=sum((mrec(i)-mrec(i-1)).*mpre(i));
     """
     ap = 0.0
+    print('mpre:', mpre)
+    print('mrec:', mpre)
+
+    print('i_list:', i_list)
     for i in i_list:
         ap += ((mrec[i]-mrec[i-1])*mpre[i])
     return ap, mrec, mpre

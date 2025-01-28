@@ -8,6 +8,7 @@ import argparse
 import math
 
 import numpy as np
+import pandas as pd
 
 MINOVERLAP = 0.5 # default value (defined in the PASCAL VOC2012 challenge)
 
@@ -32,6 +33,7 @@ args = parser.parse_args()
   (height)            *
                 (Right,Bottom)
 '''
+output_df = pd.DataFrame()
 
 # if there are no classes to ignore then replace None by empty list
 if args.ignore is None:
@@ -678,7 +680,9 @@ with open(output_files_path + "/output.txt", 'w') as output_file:
         exact_prec = (total_tp)/(total_tp + total_fp)
         exact_rec = (total_tp)/(n_gt)
 
+        f1 = F_beta(exact_rec, exact_prec, 1 )
         f2 = F_beta(exact_rec, exact_prec, 2 )
+        print('F2 =', f1)
         print('F2 =', f2)
 
         #print(tp)
@@ -757,6 +761,18 @@ with open(output_files_path + "/output.txt", 'w') as output_file:
     text = "mAP = {0:.2f}".format(mAP)
     output_file.write(text + "\n")
     print(text)
+
+    # Gather stats
+    output_dict = {}
+    ap_dictionary = {f"class_{key}_ap": value for key, value in ap_dictionary.items()}
+    output_dict.update(ap_dictionary)
+    output_dict['mAP@0.5'] = mAP
+    output_dict['F1'] = f1
+    output_dict['F2'] = f2
+
+    pd.DataFrame(output_dict, index=[0]).to_csv(os.path.join(output_files_path, 'output.csv'), index=False)
+
+
 
 # """
 #  Draw false negatives

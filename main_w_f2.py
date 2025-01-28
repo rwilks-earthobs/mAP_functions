@@ -769,6 +769,7 @@ with open(output_files_path + "/output.txt", 'w') as output_file:
     output_dict['mAP@0.5'] = mAP
     output_dict['F1'] = f1
     output_dict['F2'] = f2
+    output_dict['iou_thres'] = MINOVERLAP 
 
     pd.DataFrame(output_dict, index=[0]).to_csv(os.path.join(output_files_path, 'output.csv'), index=False)
 

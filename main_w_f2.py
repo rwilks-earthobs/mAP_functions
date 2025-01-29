@@ -184,6 +184,8 @@ def voc_ap(rec, prec):
     #     range(start=(len(mpre) - 2), end=0, step=-1)
     # also the python function range excludes the end, resulting in:
     #     range(start=(len(mpre) - 2), end=-1, step=-1)
+    print('before mrec:', mrec)
+    print('before mpre:', mpre)
     for i in range(len(mpre)-2, -1, -1):
         mpre[i] = max(mpre[i], mpre[i+1])
     """
@@ -201,8 +203,7 @@ def voc_ap(rec, prec):
     """
     ap = 0.0
     print('mpre:', mpre)
-    print('mrec:', mpre)
-
+    print('mrec:', mrec)
     print('i_list:', i_list)
     for i in i_list:
         ap += ((mrec[i]-mrec[i-1])*mpre[i])
@@ -686,7 +687,7 @@ with open(output_files_path + "/output.txt", 'w') as output_file:
 
         f1 = F_beta(exact_rec, exact_prec, 1 )
         f2 = F_beta(exact_rec, exact_prec, 2 )
-        print('F2 =', f1)
+        print('F1 =', round(f1,2))
         print('F2 =', f2)
 
         #print(tp)
